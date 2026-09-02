@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🇮🇳 Bharat Connect
+# Bharat Connect
 
 **E-Governance Citizen Services Portal**
 
