@@ -32,8 +32,6 @@ Bharat Connect is a digital platform that acts as a bridge between citizens and 
 
 ## 📁 Actual Project Structure
 
-> This reflects what is actually inside the submitted zip. It differs slightly from the originally planned structure — see notes below.
-
 ```
 Skillindia/
 ├── css/
