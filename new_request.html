@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Request - Citizen Connect</title>
+    
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="brand">Bharat Connect</div>
+        <nav>
+            <a href="dashboard.html" class="btn">My Dashboard</a>
+            <a href="index.html" class="btn btn-secondary">Logout</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="card form-card">
+            <h2>Register a Complaint / Request</h2>
+            
+            <div id="statusMessage" class="message" style="display: none;"></div>
+
+            <form id="requestForm" action="php/submit_request.php" method="POST">
+
+                <label for="name">Your Name</label>
+                <input id="name" name="name" placeholder="Enter your full name" required />
+
+                <label for="phone">Phone / Contact</label>
+                <input id="phone" name="phone" placeholder="Your contact number" />
+
+                <label for="category">Category</label>
+                <select id="category" name="category" required>
+                    <option value="">-- Select Category --</option>
+                    <option>Electric repair</option>
+                    <option>Streetlight repair</option>
+                    <option>Water services</option>
+                    <option>Birth/Death certificate</option>
+                    <option>Air/Noise pollution</option>
+                    <option>Road/Pothole repair</option>
+                </select>
+
+                <div id="certificateFields" class="conditional-fields">
+                    <p style="margin-top:0; font-size: 0.9em; color: #555;">
+                        Please provide Aadhar details for certificate processing.
+                    </p>
+                    
+                    <label for="personAadhar">Person's Aadhar Number</label>
+                    <input id="personAadhar" name="person_aadhar" placeholder="Aadhar of person for certificate">
+                    
+                    <label for="relativeAadhar">Relative's Aadhar Number (e.g., son, wife)</label>
+                    <input id="relativeAadhar" name="relative_aadhar" placeholder="Your Aadhar or a close relative's">
+                </div>
+                <label for="location">Location / Address</label>
+                <input id="location" name="location" placeholder="e.g., Near City Park, Main Street" required />
+
+                <label for="region">Region</label>
+                <select id="region" name="region">
+                    <option value="">Select region</option>
+                    <option>North</option>
+                    <option>South</option>
+                    <option>East</option>
+                    <option>West</option>
+                    <option>Central</option>
+                </select>
+
+                <label for="areaCode">Area / PIN code</label>
+                <input id="areaCode" name="areaCode" placeholder="e.g. 560001" />
+
+                <label for="description">Description</label>
+                <textarea id="description" name="description" rows="4" placeholder="Please provide details..."></textarea>
+
+                <div class="form-actions">
+                    <button type="submit" id="submitBtn" class="btn">Submit</button>
+                    
+                    <div id="formSpinner" class="loading-spinner" style="display: none; padding: 0; margin-left: 10px; font-size: 0.9em;">
+                        Submitting...
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <small>Citizen Connect — Local Government Portal</small>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

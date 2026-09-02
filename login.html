@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Citizen Connect</title>
+    
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="login-page"> <div class="login-container">
+        
+        <form id="loginForm" class="card" action="php/login_process.php" method="POST">
+            
+            <h2 class="brand" style="text-align: center; margin-bottom: 1rem; color: #333;">
+                Bharat Connect
+            </h2>
+            <p style="text-align: center;">Please log in to your account.</p>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+
+            <label>Login as:</label>
+            <div class="radio-group">
+                <label>
+                    <input type="radio" name="user_type" value="citizen" checked> 
+                    Citizen
+                </label>
+                <label>
+                    <input type="radio" name="user_type" value="admin"> 
+                    Official / Admin
+                </label>
+            </div>
+
+            <div class="form-actions" style="margin-top: 1rem;">
+                <button type="submit" class="btn" style="width: 100%;">Login</button>
+            </div>
+
+            <p class="form-links">
+                Don't have an account? <a href="register.html">Register here</a>
+            </p>
+        </form>
+    </div>
+
+</body>
+</html>
