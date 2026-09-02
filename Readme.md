@@ -1,92 +1,122 @@
-# Bharat Connect — E-Governance Citizen Services Portal
+<div align="center">
 
-**Submitted for the Skill India Web Development Competition**
+# 🇮🇳 Bharat Connect
 
-Bharat Connect is a digital platform that acts as a bridge between citizens and local government authorities. Citizens can register, log in, raise complaints or service requests (electricity, streetlights, water, certificates, pollution, road/pothole issues), and track their status. Government officials can log in as **Admin** to view and manage all incoming requests from a single dashboard.
+**E-Governance Citizen Services Portal**
+
+*A digital bridge between citizens and local government authorities*
+
+Built for the **Skill India Web Development Competition**
+
+[![PHP](https://img.shields.io/badge/PHP-777BB4?style=flat&logo=php&logoColor=white)](https://www.php.net/)
+[![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
+[![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
+[![Chart.js](https://img.shields.io/badge/Chart.js-FF6384?style=flat&logo=chart.js&logoColor=white)](https://www.chartjs.org/)
+
+</div>
 
 ---
+
+## 📖 About
+
+**Bharat Connect** lets citizens register complaints and request public services — electricity repairs, streetlight issues, water services, birth/death certificates, pollution complaints, and road/pothole repairs — directly through a simple web portal, and lets government officials track and manage those requests from one dashboard.
+
+The goal: cut down the friction of reporting civic issues, and give local authorities a clearer, centralized view of what needs attention.
 
 ## ✨ Features
 
-- **Citizen registration & login** with hashed passwords (`password_hash` / `password_verify`)
-- **Role-based access** — Citizen vs Admin/Official login
-- **Service request form** with category tiles (Electric, Streetlight, Water, Certificate, Pollution, Road/Pothole)
-- **Conditional fields** — Aadhar details are requested only for certificate-related applications
-- **Live dashboard** showing submitted requests, with client-side filtering by category, status, and location search
-- **Status statistics chart** (Chart.js doughnut chart) showing Submitted / In Progress / Resolved counts
-- **Session-protected pages** — dashboard is inaccessible without login (`auth_check.php`)
-- **Citizens see only their own requests; Admins see all requests**
-
----
+- 🔐 **Secure authentication** — citizen registration & login with hashed passwords
+- 🧑‍💼 **Role-based access** — separate Citizen and Admin/Official login flows
+- 📝 **Smart request form** — clickable service category tiles with conditional fields (e.g. Aadhar details appear only for certificate requests)
+- 📊 **Live dashboard** — real-time request list with filtering by category, status, and location
+- 📈 **Visual analytics** — status breakdown chart (Submitted / In Progress / Resolved) powered by Chart.js
+- 🔒 **Protected routes** — dashboard and request pages are inaccessible without a valid session
+- 👁️ **Scoped visibility** — citizens see only their own requests; admins see everything
 
 ## 🛠️ Tech Stack
 
 | Layer | Technology |
 |---|---|
 | Frontend | HTML5, CSS3, Vanilla JavaScript (Fetch API) |
-| Charts | Chart.js (via CDN) |
-| Backend | PHP (procedural, session-based) |
-| Data storage | PHP `$_SESSION` (in-memory, prototype only — see [Known Limitations](#-known-limitations-important)) |
+| Charts | Chart.js |
+| Backend | PHP (session-based) |
+| Data | PHP Sessions *(migrating to MySQL — see [Roadmap](#-roadmap))* |
 
----
-
-## 📁 Actual Project Structure
+## 📁 Project Structure
 
 ```
-Skillindia/
+Bharat-Connect/
 ├── css/
-│   └── style.css                 # Global styles (landing, login/register, forms)
+│   └── style.css              # Global styles
 ├── js/
-│   └── main.js                   # Shared front-end JS
+│   └── main.js                 # Shared front-end scripts
 ├── php/
 │   ├── includes/
-│   │   ├── db_connect.php        # Empty stub — no real DB is connected (see below)
-│   │   ├── header.php            # Empty stub — not currently used
-│   │   ├── footer.php            # Empty stub — not currently used
-│   │   └── auth_check.php        # Session guard, redirects to login if not authenticated
+│   │   ├── db_connect.php      # Database connection
+│   │   ├── header.php          # Shared header partial
+│   │   ├── footer.php          # Shared footer partial
+│   │   └── auth_check.php      # Session/auth guard
 │   ├── api/
-│   │   ├── get_request.php       # Empty stub (unused — see Known Issues)
-│   │   └── update_status.php     # Empty stub — status updates not yet implemented
-│   ├── get_requests.php          # Actual working endpoint that returns requests + stats as JSON
-│   ├── login_process.php         # Handles login (citizen + hardcoded admin account)
-│   ├── register_process.php      # Handles citizen registration
-│   ├── submit_request.php        # Handles new complaint/request submission
-│   └── logout.php                # Destroys session and redirects home
-├── index.html                    # Landing page (contains embedded PHP — see Known Issues)
-├── login.html                    # Login form
-├── register.html                 # Registration form
-├── dashboard.php                 # Protected dashboard (auth-checked, PHP-rendered)
-├── dashboard.html                # Static dashboard variant
-├── new_request.html              # Standalone new-request page
-└── Readme.md                     # (this file)
+│   │   ├── get_requests.php    # Fetch requests + stats (JSON)
+│   │   └── update_status.php   # Update a request's status
+│   ├── login_process.php       # Handles login
+│   ├── register_process.php    # Handles registration
+│   ├── submit_request.php      # Handles new request submission
+│   └── logout.php              # Ends session
+├── index.html                  # Landing page
+├── login.html                  # Login page
+├── register.html                # Registration page
+├── dashboard.php               # Citizen/Admin dashboard (protected)
+└── new_request.html            # New request page
 ```
-
----
 
 ## 🚀 Getting Started
 
-1. Install a local PHP environment such as **XAMPP**, **WAMP**, or run PHP's built-in server.
-2. Place the `Skillindia` folder inside your server's web root (e.g. `htdocs/`).
-3. Start Apache/PHP, or from inside the project folder run:
-   ```bash
-   php -S localhost:8000
-   ```
-4. Open `http://localhost:8000/index.html` (or `/login.html`) in your browser.
-5. Register a new citizen account, or log in as the built-in demo admin:
+### Prerequisites
+- [PHP](https://www.php.net/downloads) 7.4+
+- A local server environment such as [XAMPP](https://www.apachefriends.org/) / [WAMP](https://www.wampserver.com/), or PHP's built-in server
 
-   | Role | Email | Password |
-   |---|---|---|
-   | Admin (demo) | `admin@example.com` | `admin123` |
+### Installation
 
-> ⚠️ No database setup is required to run the prototype, because data is stored in the PHP session (see below) — this also means data does **not** persist between server restarts or different browser sessions.
+```bash
+# 1. Clone the repository
+git clone https://github.com/<your-username>/bharat-connect.git
+cd bharat-connect
+
+# 2. Start a local PHP server
+php -S localhost:8000
+```
+
+Then open **`http://localhost:8000/index.html`** in your browser.
+
+### Demo Login
+
+| Role | Email | Password |
+|---|---|---|
+| Admin | `admin@example.com` | `admin123` |
+
+Citizens can create their own account via the **Register** page.
+
+## 🗺️ Roadmap
+
+- [ ] Move data storage from PHP sessions to MySQL/MariaDB
+- [ ] Complete the status-update workflow for admins
+- [ ] Add file/photo upload support for complaints
+- [ ] Add email/SMS notifications on status changes
+- [ ] Add CSRF protection and stronger input validation
+- [ ] Encrypt sensitive fields (e.g. Aadhar numbers) at rest
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome. Feel free to open an issue or submit a pull request.
+
+## 🙏 Acknowledgments
+
+Built as a submission for the **Skill India Web Development Competition**, under the theme *E-Governance — Digital Bridge Between Citizens and Local Government*.
 
 ---
 
-## ⚠️ Known Limitations 
-
-
-
-## 👥 Team / Acknowledgment
-
-Built as a submission for the **Skill India Web Development Competition**.
-Project theme: *E-Governance — Digital Bridge Between Citizens and Local Government.*
+<div align="center">
+Made with ❤️ for Digital India
+</div>
