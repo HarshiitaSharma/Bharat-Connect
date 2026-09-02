@@ -82,42 +82,11 @@ Skillindia/
 
 ---
 
-## ⚠️ Known Limitations (Important)
+## ⚠️ Known Limitations 
 
-Being transparent about the current state of the prototype helps reviewers/judges and future contributors:
 
-1. **No real database.** `php/includes/db_connect.php` is present but empty. All users and requests are stored in `$_SESSION`, so:
-   - Data is lost when the PHP session expires or the server restarts.
-   - Two different browsers/devices will not see the same data.
-   - This should be replaced with MySQL/MariaDB (e.g. via PDO) for a production version.
-2. **Dashboard API path mismatch.** `dashboard.php` calls `fetch('php/api/get_requests.php')`, but the working endpoint actually lives at `php/get_requests.php` (the file at `php/api/get_request.php` — singular, no "s" — is an empty stub). Until this is fixed, the dashboard's live data fetch will fail; either move/rename `get_requests.php` into `php/api/` or update the fetch URL in `dashboard.php`.
-3. **`header.php` and `footer.php` are empty** and not currently included anywhere — either wire them in for shared layout, or remove them to avoid confusion.
-4. **Status updates aren't implemented yet.** `php/api/update_status.php` is an empty stub, so admins currently cannot change a request's status (Submitted → In Progress → Resolved) from the UI.
-5. **Embedded PHP inside `.html` files.** `index.html` contains `<?php ... ?>` tags, which most servers will **not** execute inside a `.html` file (only `.php` files are parsed by default). Rename it to `index.php`, or configure the server to parse `.html` as PHP, for the login/logout conditional header to actually work.
-6. **Aadhar numbers are collected in plain text** and stored in the session for certificate requests. For any real deployment involving government ID numbers, this data must be encrypted at rest, transmitted over HTTPS only, and access-restricted per data-protection best practices.
-7. **No CSRF protection or input sanitization/validation** beyond basic "required" checks — recommended before any real-world use.
-
----
-
-## 🔭 Suggested Future Improvements
-
-- Migrate storage from PHP sessions to a proper database (MySQL/MariaDB) using PDO with prepared statements.
-- Implement the `update_status.php` endpoint so admins can move requests through their lifecycle.
-- Fix the `get_requests.php` path so the live dashboard fetch works end-to-end.
-- Add email/SMS notifications when a request's status changes.
-- Add file/photo upload support for complaints (e.g. photo of a pothole).
-- Add pagination for the requests list as data grows.
-- Add proper server-side validation, CSRF tokens, and rate-limiting on auth endpoints.
-
----
 
 ## 👥 Team / Acknowledgment
 
 Built as a submission for the **Skill India Web Development Competition**.
 Project theme: *E-Governance — Digital Bridge Between Citizens and Local Government.*
-
----
-
-## 📄 License
-
-This project was created for educational/competition purposes. Add a license of your choice (e.g. MIT) if you plan to share or extend it publicly.
