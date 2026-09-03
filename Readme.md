@@ -40,8 +40,8 @@ The goal: cut down the friction of reporting civic issues, and give local author
 |---|---|
 | Frontend | HTML5, CSS3, Vanilla JavaScript (Fetch API) |
 | Charts | Chart.js |
-| Backend | PHP (session-based) |
-| Data | PHP Sessions *(migrating to MySQL — see [Roadmap](#-roadmap))* |
+| Backend | PHP (PDO) |
+| Data | SQLite *(swap the DSN in `db_connect.php` for MySQL later if needed)* |
 
 ## 📁 Project Structure
 
@@ -53,22 +53,24 @@ Bharat-Connect/
 │   └── main.js                 # Shared front-end scripts
 ├── php/
 │   ├── includes/
-│   │   ├── db_connect.php      # Database connection
-│   │   ├── header.php          # Shared header partial
+│   │   ├── db_connect.php      # SQLite (PDO) connection + schema + seed admin
+│   │   ├── header.php          # Shared header/nav partial
 │   │   ├── footer.php          # Shared footer partial
 │   │   └── auth_check.php      # Session/auth guard
 │   ├── api/
 │   │   ├── get_requests.php    # Fetch requests + stats (JSON)
-│   │   └── update_status.php   # Update a request's status
+│   │   └── update_status.php   # Admin-only: update a request's status
+│   ├── data/                   # Auto-created SQLite database lives here (gitignored)
 │   ├── login_process.php       # Handles login
 │   ├── register_process.php    # Handles registration
 │   ├── submit_request.php      # Handles new request submission
 │   └── logout.php              # Ends session
-├── index.html                  # Landing page
+├── index.php                   # Landing page
 ├── login.html                  # Login page
-├── register.html                # Registration page
+├── register.html               # Registration page
 ├── dashboard.php               # Citizen/Admin dashboard (protected)
-└── new_request.html            # New request page
+├── new_request.html            # New request page
+└── CHANGES.md                  # Log of fixes made to the original prototype
 ```
 
 ## 🚀 Getting Started
@@ -88,7 +90,7 @@ cd bharat-connect
 php -S localhost:8000
 ```
 
-Then open **`http://localhost:8000/index.html`** in your browser.
+Then open **`http://localhost:8000/index.php`** in your browser. A SQLite database is created automatically on first run at `php/data/bharat_connect.sqlite` — no separate database server needed.
 
 ### Demo Login
 
@@ -100,12 +102,15 @@ Citizens can create their own account via the **Register** page.
 
 ## 🗺️ Roadmap
 
-- [ ] Move data storage from PHP sessions to MySQL/MariaDB
-- [ ] Complete the status-update workflow for admins
+- [x] Real, persistent data storage (SQLite via PDO)
+- [x] Admin status-update workflow (Submitted → In Progress → Resolved)
+- [ ] Migrate from SQLite to MySQL/MariaDB for larger deployments
 - [ ] Add file/photo upload support for complaints
 - [ ] Add email/SMS notifications on status changes
 - [ ] Add CSRF protection and stronger input validation
 - [ ] Encrypt sensitive fields (e.g. Aadhar numbers) at rest
+
+See [`CHANGES.md`](CHANGES.md) for the full list of fixes made to the original prototype.
 
 ## 🤝 Contributing
 
