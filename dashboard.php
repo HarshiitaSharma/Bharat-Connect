@@ -379,18 +379,14 @@
     </style>
 </head>
 <body>
-    <header class="site-header">
-        <div class="brand">Bharat Connect</div>
-        
-        <!-- PHP injects the user's name -->
-        <div id="currentUserInfo" style="color:#fff;font-size:13px;margin-left:12px">
-            Welcome, <?php echo htmlspecialchars($_SESSION['user_name']); ?>!
-        </div>
-        <nav style="display: flex; gap: 10px;">
-            <button id="newRequestBtn">New Request</button>
-            <a href="php/logout.php" id="logoutBtn">Logout</a>
-        </nav>
-    </header>
+<?php
+    // Module: shared header (was an empty, unused stub before).
+    // The "New Request" button is dashboard-specific, so it's passed in
+    // rather than hardcoded into the shared partial.
+    $extraNavHtml = '<button id="newRequestBtn">New Request</button>';
+    $hideDashboardLink = true;
+    include('php/includes/header.php');
+?>
 
     <main class="container">
 
@@ -504,14 +500,16 @@
 
     </main>
 
-    <footer class="site-footer">
-        <small>Citizen Connect — Local Government Portal prototype</small>
-    </footer>
+<?php include('php/includes/footer.php'); ?>
 
     <!-- =================================================================== -->
     <!-- === JAVASCRIPT CONNECTED TO PHP API (MODULE 2 & 3) === -->
     <!-- =================================================================== -->
     <script>
+        // Injected by PHP so the front-end knows whether to show
+        // admin-only controls (e.g. the status-update dropdown below).
+        const CURRENT_USER_ROLE = <?php echo json_encode($_SESSION['user_role']); ?>;
+
         document.addEventListener('DOMContentLoaded', () => {
 
             // === GLOBAL VARIABLES ===
@@ -665,17 +663,30 @@
                     return;
                 }
                 
+                const statuses = ['Submitted', 'In Progress', 'Resolved'];
+
                 filtered.forEach(req => {
                     const item = document.createElement('div');
                     item.className = 'request-item';
+
+                    // Admins get a dropdown + button to move a request
+                    // through Submitted -> In Progress -> Resolved.
+                    // (php/api/update_status.php was an empty stub before.)
+                    const adminControlsHtml = CURRENT_USER_ROLE === 'admin' ? `
+                        <div class="admin-status-controls" style="display:flex; gap:0.5rem; margin-top:0.75rem;" onclick="event.stopPropagation();">
+                            <select class="status-select">
+                                ${statuses.map(s => `<option value="${s}" ${s === req.status ? 'selected' : ''}>${s}</option>`).join('')}
+                            </select>
+                            <button type="button" class="update-status-btn">Update</button>
+                        </div>
+                    ` : '';
+
                     item.innerHTML = `
                         <div class="request-item-header">
                             <h3>${req.category}</h3>
                             <span class="status status-${req.status.replace(' ', '')}">${req.status}</span>
                         </div>
                         <div class="request-item-details">
-                            <!-- Admin/Citizen view logic can be added here -->
-                            <!-- For this prototype, we show all data -->
                             <div><strong>Name:</strong> ${req.user_name || req.name}</div>
                             <div><strong>Location:</strong> ${req.location} (${req.region})</div>
                             <div><strong>Date:</strong> ${req.date || req.created_at}</div>
@@ -683,10 +694,32 @@
                         <div class="request-item-description">
                             <strong>Details:</strong> ${req.description || 'No details provided.'}
                         </div>
+                        ${adminControlsHtml}
                     `;
                     item.addEventListener('click', () => {
                         item.classList.toggle('expanded');
                     });
+
+                    const updateBtn = item.querySelector('.update-status-btn');
+                    if (updateBtn) {
+                        updateBtn.addEventListener('click', () => {
+                            const newStatus = item.querySelector('.status-select').value;
+                            updateBtn.disabled = true;
+                            const body = new URLSearchParams({ id: req.id, status: newStatus });
+                            fetch('php/api/update_status.php', { method: 'POST', body })
+                                .then(res => res.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        loadDashboardData();
+                                    } else {
+                                        alert(data.message || 'Could not update status.');
+                                    }
+                                })
+                                .catch(() => alert('Network error while updating status.'))
+                                .finally(() => { updateBtn.disabled = false; });
+                        });
+                    }
+
                     requestsList.appendChild(item);
                 });
             }
