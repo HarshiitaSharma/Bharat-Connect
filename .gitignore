@@ -1,0 +1,8 @@
+# Generated SQLite database (contains real user data — never commit it)
+php/data/*.sqlite
+php/data/*.sqlite-journal
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+.vscode/
