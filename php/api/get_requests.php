@@ -55,6 +55,7 @@ foreach ($rows as $row) {
         'description'     => $row['description'],
         'person_aadhar'   => $row['person_aadhar'],
         'relative_aadhar' => $row['relative_aadhar'],
+        'photo'           => $row['photo'] ?? null,
     ];
 
     if ($row['status'] === 'Submitted') {
