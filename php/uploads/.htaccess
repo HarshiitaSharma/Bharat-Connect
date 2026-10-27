@@ -1,0 +1,4 @@
+# Apache only (XAMPP/WAMP): never execute anything in this folder
+php_flag engine off
+Options -Indexes
+RemoveHandler .php .phtml .php3 .php5
